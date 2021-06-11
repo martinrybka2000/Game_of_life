@@ -6,7 +6,7 @@ from cells import Cells
 
 
 class Game:
-    def __init__(self, display_size, grid_size):
+    def __init__(self, display_size, grid_size, name):
         self.__display_size = display_size
         self.__screen = pygame.display.set_mode((display_size[0], display_size[1]))
 
@@ -20,7 +20,7 @@ class Game:
         self.__background = Background(self.__screen, display_size, grid_size, self.__line_color, self.__line_width)
         self.__cells = Cells(display_size, grid_size, self.__back_color, self.__alive_color, self.__line_width)
 
-        pygame.display.set_caption("Game of Life")
+        pygame.display.set_caption(name)
         self.__screen.fill(self.__back_color)
 
         self.__background.Draw()
