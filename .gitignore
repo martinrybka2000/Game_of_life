@@ -130,3 +130,5 @@ dmypy.json
 
 #vsccode
 .vscode/
+.vscode
+vscode
