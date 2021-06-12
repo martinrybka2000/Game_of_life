@@ -2,9 +2,9 @@ import pygame
 
 
 class Background:
-    def __init__(self, surface, display_size, grid_size, line_color, line_width):
+    def __init__(self, surface, grid_size, line_color, line_width):
         self.__screen = surface
-        self.__display_size = display_size
+        self.__display_size = surface.get_size()
         self.__grid_size = grid_size
         self.__line_color = line_color
         self.__line_width = line_width

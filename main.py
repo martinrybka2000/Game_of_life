@@ -7,7 +7,7 @@ pygame.init()
 
 # image = pygame.Surface([20, 20]).convert_alpha()
 
-game = Game((800, 800), (5, 5), "Game of life")
+game = Game((800, 800), (10, 10), "Game of life")
 
 while True:
     # event handling
