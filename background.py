@@ -40,6 +40,33 @@ class Background:
 
     # adding the offeset vector and Drawing the lines again
     def Move(self, offset):
+        # adding the offset
         for i in range(len(offset)):
             self.__offset[i] += offset[i]
+
+        # variables for looping the background
+        off_x = self.__offset[0]
+        off_y = self.__offset[1]
+
+        width = self.__screen.get_width()
+        height = self.__screen.get_height()
+
+        looping_offset = [0, 0]
+
+        # looping the background
+        if (off_x > width):
+            looping_offset[0] += (-width)
+
+        elif (off_x < (-width)):
+            looping_offset[0] += width
+
+        elif (off_y > height):
+            looping_offset[1] += (-height)
+
+        elif (off_y < (-height)):
+            looping_offset[1] += height
+
+        for i in range(len(looping_offset)):
+            self.__offset[i] += looping_offset[i]
+
         self.Draw()

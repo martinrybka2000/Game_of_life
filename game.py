@@ -33,6 +33,12 @@ class Game:
     def Exit(self):
         print("nothing yet")
 
+    def Move(self, offset):
+        self.__screen.fill(self.__back_color)
+        self.__background.Move(offset)
+        self.__cells.Move(offset)
+        pygame.display.update()
+
     def Update(self):
         print("nothing yet")
 
