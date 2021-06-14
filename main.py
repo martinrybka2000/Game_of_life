@@ -35,5 +35,8 @@ while True:
     elif keys[pygame.K_DOWN]:
         game.Move((0, 10))
 
+    elif keys[pygame.K_a]:
+        game.Tick()
+
     # delay
     pygame.time.delay(10)

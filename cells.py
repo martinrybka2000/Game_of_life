@@ -61,5 +61,12 @@ class Cells:
     def Step_back(self, num_of_steps):
         print("nothing")
 
-    def Switch_cell(self, xy):
-        print("nothing")
+    def Switch_cell(self, x, y):
+
+        if (x < self.__grid_size[0] and y < self.__grid_size[1]):
+            if(self.__cells[x][y][self.__actual_step] == True):
+                self.__cells[x][y][self.__actual_step] = False
+            else:
+                self.__cells[x][y][self.__actual_step] = True
+
+        self.Draw()

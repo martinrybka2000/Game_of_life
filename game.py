@@ -45,7 +45,10 @@ class Game:
 
     def Tick(self):
         self.__screen.fill(self.__back_color)
-        self.__background.Move((-10, -1))
+        self.__cells.Switch_cell(1, 2)
+        self.__cells.Switch_cell(1, 2)
+        self.__cells.Switch_cell(3, 3)
+        self.__cells.Switch_cell(1, 3)
         self.__background.Draw()
         # self.__cells.Step_up()
 
