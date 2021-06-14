@@ -12,11 +12,11 @@ class Cells:
         self.__alive_color = alive_color
         self.__line_width = line_width
 
-        number_of_steps = 10
+        self.__number_of_steps = 10
         self.__actual_step = 0
 
         # self.__cells = [grid_size[0]][grid_size[1]][number_of_steps]
-        self.__cells = np.zeros((grid_size[0], grid_size[1], number_of_steps))
+        self.__cells = np.zeros((grid_size[0], grid_size[1], self.__number_of_steps))
         self.__offset = [0, 0]
         self.__zoom = 0
 

@@ -24,16 +24,16 @@ while True:
         quit()
 
     elif keys[pygame.K_LEFT]:
-        game.Move((-2, 0))
+        game.Move((-10, 0))
 
     elif keys[pygame.K_RIGHT]:
-        game.Move((2, 0))
+        game.Move((10, 0))
 
     elif keys[pygame.K_UP]:
-        game.Move((0, -2))
+        game.Move((0, -10))
 
     elif keys[pygame.K_DOWN]:
-        game.Move((0, 2))
+        game.Move((0, 10))
 
     # delay
     pygame.time.delay(10)
