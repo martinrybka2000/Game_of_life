@@ -15,7 +15,10 @@ class Background:
 
     def Set_grid_size(self, grid_size):
         self.__grid_size = grid_size
-        self.Draw()
+        # self.Draw()
+
+    def Increment_grid_size(self):
+        self.Set_grid_size((self.__grid_size[0] + 2, self.__grid_size[1] + 2))
 
     def Draw(self):
 

@@ -10,7 +10,7 @@ class Game:
         self.__display_size = display_size
         self.__screen = pygame.display.set_mode((display_size[0], display_size[1]))
 
-        self.__grid_size = grid_size
+        # self.__grid_size = grid_size
 
         self.__back_color = pygame.color.Color("white")
         self.__line_color = pygame.color.Color("grey")
@@ -45,10 +45,15 @@ class Game:
 
     def Tick(self):
         self.__screen.fill(self.__back_color)
-        self.__cells.Switch_cell(0, 0)
-        self.__cells.Switch_cell(1, 1)
-        self.__cells.Switch_cell(2, 3)
-        self.__cells.Switch_cell(4, 3)
+        # self.__cells.Switch_cell(0, 0)
+        # self.__cells.Switch_cell(1, 1)
+        # self.__cells.Switch_cell(2, 3)
+        # self.__cells.Switch_cell(4, 3)
+        # self.__cells.Step_up(0)
+        # self.__cells.Set_grid_size((8, 8))
+        self.__cells.Increment_grid_size()
+        # self.__background.Set_grid_size((8, 8))
+        self.__background.Increment_grid_size()
         self.__cells.Draw()
         self.__background.Draw()
         # self.__cells.Step_up()
