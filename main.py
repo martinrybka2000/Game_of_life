@@ -7,7 +7,8 @@ pygame.init()
 
 # image = pygame.Surface([20, 20]).convert_alpha()
 
-game = Game((800, 800), (5, 5), "Game of life")
+game = Game((800, 800), (8, 8), "Game of life")
+button_flag = True
 
 while True:
     # event handling
@@ -24,16 +25,23 @@ while True:
         quit()
 
     elif keys[pygame.K_LEFT]:
-        game.Move((-2, 0))
+        game.Move((-10, 0))
 
     elif keys[pygame.K_RIGHT]:
-        game.Move((2, 0))
+        game.Move((10, 0))
 
     elif keys[pygame.K_UP]:
-        game.Move((0, -2))
+        game.Move((0, -10))
 
     elif keys[pygame.K_DOWN]:
-        game.Move((0, 2))
+        game.Move((0, 10))
 
-    # delay
-    pygame.time.delay(10)
+    elif keys[pygame.K_a] and button_flag:
+        game.Tick()
+        button_flag = False
+
+    elif keys[pygame.K_a] == False and button_flag == False:
+        button_flag = True
+
+        # delay
+    pygame.time.delay(20)
