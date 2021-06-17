@@ -20,9 +20,9 @@ class Cells:
         self.__offset = [0, 0]
         self.__zoom = 0
 
-        self.__cells[2][1][0] = True
-        self.__cells[0][0][0] = True
-        self.__cells[4][4][0] = True
+        self.__cells[2][1][self.__actual_step] = True
+        self.__cells[0][0][self.__actual_step] = True
+        self.__cells[4][4][self.__actual_step] = True
 
     def Set_grid_size(self, grid_size):
         self.__grid_size = grid_size
@@ -42,7 +42,7 @@ class Cells:
         # looking for alive cells
         for x in range(self.__cells.shape[0]):
             for y in range(self.__cells.shape[1]):
-                if (self.__cells[x][y][0] == True):
+                if (self.__cells[x][y][self.__actual_step] == True):
                     alivecells.append(pygame.Rect(x*rec_width + offset[0], y*rec_height + offset[1], rec_width, rec_height))
 
         # drawing alive cells
@@ -68,5 +68,3 @@ class Cells:
                 self.__cells[x][y][self.__actual_step] = False
             else:
                 self.__cells[x][y][self.__actual_step] = True
-
-        self.Draw()
