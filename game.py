@@ -35,7 +35,7 @@ class Game:
             self.__cells.Draw()
             self.__background.Draw()
 
-        pygame.display.update()
+            pygame.display.update()
 
     def Exit(self):
         print("nothing yet")
@@ -51,17 +51,11 @@ class Game:
 
     def Tick(self):
         self.__screen.fill(self.__back_color)
-        # self.__cells.Switch_cell(0, 0)
-        # self.__cells.Switch_cell(1, 1)
-        # self.__cells.Switch_cell(2, 3)
-        # self.__cells.Switch_cell(4, 3)
         size = self.__cells.Step_up(0)
         self.__background.Set_grid_size(size)
-        # self.__cells.Set_grid_size((8, 8))
         # self.__cells.Increment_grid_size()
         # self.__background.Increment_grid_size()
         self.__cells.Draw()
         self.__background.Draw()
-        # self.__cells.Step_up()
 
         pygame.display.update()

@@ -7,7 +7,7 @@ pygame.init()
 
 # image = pygame.Surface([20, 20]).convert_alpha()
 
-game = Game((800, 800), (8, 8), "Game of life")
+game = Game((800, 800), 8, "Game of life")
 button_flag = True
 button_flag2 = True
 

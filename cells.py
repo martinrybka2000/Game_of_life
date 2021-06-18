@@ -13,22 +13,21 @@ class Cells:
         self.__alive_color = alive_color
         self.__line_width = line_width
 
-        self.__number_of_steps = 100
+        self.__number_of_steps = 10
         self.__actual_step = 0
 
-        # self.__cells = [grid_size[0]][grid_size[1]][number_of_steps]
-        self.__cells = np.zeros((self.__number_of_steps, grid_size[0], grid_size[1]))
+        self.__cells = np.zeros((grid_size, grid_size))
         self.__offset = [0, 0]
         self.__zoom = 0
 
-        self.__cells[self.__actual_step][1][0] = True
-        self.__cells[self.__actual_step][1][1] = True
-        self.__cells[self.__actual_step][1][3] = True
-        self.__cells[self.__actual_step][2][3] = True
+        self.__cells[1][0] = True
+        self.__cells[1][1] = True
+        self.__cells[1][3] = True
+        self.__cells[2][3] = True
 
     def __Judge_cell(self, x, y, step, neighbors):
         # rules of the game of life
-        if (self.__cells[step][x][y] == True):
+        if (self.__cells[x][y] == True):
             if (neighbors < 2 or neighbors > 3):
                 return False
             else:
@@ -38,61 +37,63 @@ class Cells:
 
     def Set_grid_size(self, grid_size):
         # calculate the diference in grid size
-        dif = [grid_size[0] - self.__grid_size[0], grid_size[1] - self.__grid_size[1]]
-
-        if (dif[0] == 0 and dif[1] == 0):
+        if (self.__grid_size <= 2):
             return 0
 
-        new_arr = np.zeros((self.__number_of_steps, grid_size[0], grid_size[1]))
+        dif = grid_size - self.__grid_size
+        half_dif = math.floor(dif / 2)
+
+        if (dif == 0):
+            return 0
+
+        new_arr = np.zeros((grid_size, grid_size))
 
         # if new grid bigger add ald cells to the new array moved by a vector
-        if (dif[0] > 0 and dif[1] > 0):
+        if (dif > 0):
             old_arr_shape = self.__cells.shape
 
-            for i in range(old_arr_shape[0]):
-                for x in range(old_arr_shape[1]):
-                    for y in range(old_arr_shape[2]):
-                        if(self.__cells[i][x][y]):
-                            new_arr[i][x + math.floor(dif[0] / 2)][y + math.floor(dif[1] / 2)] = True
-                        else:
-                            new_arr[i][x + math.floor(dif[0] / 2)][y + math.floor(dif[1] / 2)] = False
+            for x in range(old_arr_shape[0]):
+                for y in range(old_arr_shape[1]):
+                    if(self.__cells[x][y]):
+                        new_arr[x + half_dif][y + half_dif] = True
+                    else:
+                        new_arr[x + half_dif][y + half_dif] = False
 
             self.__grid_size = grid_size
             self.__cells = new_arr
 
-        elif (dif[0] < 0 and dif[1] < 0):
+        elif (dif < 0):
 
             new_arr_shape = new_arr.shape
 
-            for i in range(new_arr_shape[0]):
-                for x in range(new_arr_shape[1]):
-                    for y in range(new_arr_shape[2]):
-                        if(self.__cells[i][x][y]):
-                            new_arr[i][x + math.floor(dif[0] / 2)][y + math.floor(dif[1] / 2)] = True
-                        else:
-                            new_arr[i][x + math.floor(dif[0] / 2)][y + math.floor(dif[1] / 2)] = False
+            for x in range(new_arr_shape[0]):
+                for y in range(new_arr_shape[1]):
+                    if(self.__cells[x][y]):
+                        new_arr[x + half_dif][y + half_dif] = True
+                    else:
+                        new_arr[x + half_dif][y + half_dif] = False
 
             self.__grid_size = grid_size
             self.__cells = new_arr
 
     def Increment_grid_size(self):
-        self.Set_grid_size((self.__grid_size[0] + 2, self.__grid_size[1] + 2))
+        self.Set_grid_size(self.__grid_size + 2)
 
     def Decrement_grid_size(self):
 
-        for i in range(self.__grid_size[0]):
-            if (self.__cells[self.__actual_step][i][0]):
+        for i in range(self.__grid_size):
+            if (self.__cells[i][0]):
                 return False
-            if (self.__cells[self.__actual_step][i][self.__grid_size[1] - 1]):
-                return False
-
-        for i in range(self.__grid_size[1]):
-            if (self.__cells[self.__actual_step][0][i]):
-                return False
-            if (self.__cells[self.__actual_step][self.__grid_size[0] - 1][i]):
+            if (self.__cells[i][self.__grid_size - 1]):
                 return False
 
-        self.Set_grid_size((self.__grid_size[0] - 2, self.__grid_size[1] - 2))
+        for i in range(self.__grid_size):
+            if (self.__cells[0][i]):
+                return False
+            if (self.__cells[self.__grid_size - 1][i]):
+                return False
+
+        self.Set_grid_size(self.__grid_size - 2)
         return True
 
     def Draw(self):
@@ -103,13 +104,13 @@ class Cells:
         alivecells = []
 
         # calculating cell size
-        rec_width = self.__screen.get_width() / self.__grid_size[0]
-        rec_height = self.__screen.get_height() / self.__grid_size[1]
+        rec_width = self.__screen.get_width() / self.__grid_size
+        rec_height = self.__screen.get_height() / self.__grid_size
 
         # looking for alive cells
-        for x in range(self.__cells.shape[1]):
-            for y in range(self.__cells.shape[2]):
-                if (self.__cells[self.__actual_step][x][y] == True):
+        for x in range(self.__cells.shape[0]):
+            for y in range(self.__cells.shape[1]):
+                if (self.__cells[x][y] == True):
                     alivecells.append(pygame.Rect(x*rec_width + offset[0], y*rec_height + offset[1], rec_width, rec_height))
 
         # drawing alive cells
@@ -126,25 +127,28 @@ class Cells:
 
         # iterate thru the inner square
 
-        for x in range(1, self.__cells.shape[1] - 1):
-            for y in range(1, self.__cells.shape[2] - 1):
+        new_cells = np.zeros((self.__grid_size, self.__grid_size))
+
+        for x in range(1, self.__cells.shape[0] - 1):
+            for y in range(1, self.__cells.shape[1] - 1):
 
                 neighbors = 0
                 # if cell would count itself as her neighbor
-                if (self.__cells[self.__actual_step][x][y] == True):
+                if (self.__cells[x][y] == True):
                     neighbors -= 1
 
                 # count neighbors
                 for i in range(9):
                     Vec_x = (i % 3) - 1
                     Vec_y = math.floor(i / 3) - 1
-                    if (self.__cells[self.__actual_step][x + Vec_x][y + Vec_y] == True):
+                    if (self.__cells[x + Vec_x][y + Vec_y] == True):
                         neighbors += 1
 
                 # check if the cell dead or alive
-                self.__cells[self.__actual_step + 1][x][y] = self.__Judge_cell(x, y, self.__actual_step, neighbors)
+                new_cells[x][y] = self.__Judge_cell(x, y, self.__actual_step, neighbors)
 
         self.__actual_step += 1
+        self.__cells = new_cells
         return self.__grid_size
 
     def Step_back(self, num_of_steps):
@@ -153,8 +157,8 @@ class Cells:
     def Switch_cell(self, x, y):
 
         # check if out of boundries
-        if (x < self.__grid_size[0] and y < self.__grid_size[1]):
-            if(self.__cells[self.__actual_step][x][y] == True):
-                self.__cells[self.__actual_step][x][y] = False
+        if (x < self.__grid_size and y < self.__grid_size):
+            if(self.__cells[x][y] == True):
+                self.__cells[x][y] = False
             else:
-                self.__cells[self.__actual_step][x][y] = True
+                self.__cells[x][y] = True
