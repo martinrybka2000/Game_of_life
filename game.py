@@ -29,7 +29,13 @@ class Game:
         pygame.display.update()
 
     def Start(self):
-        print("nothing yet")
+        if (self.__cells.Decrement_grid_size()):
+            self.__screen.fill(self.__back_color)
+            self.__background.Decrement_grid_size()
+            self.__cells.Draw()
+            self.__background.Draw()
+
+        pygame.display.update()
 
     def Exit(self):
         print("nothing yet")
@@ -49,11 +55,11 @@ class Game:
         # self.__cells.Switch_cell(1, 1)
         # self.__cells.Switch_cell(2, 3)
         # self.__cells.Switch_cell(4, 3)
-        # self.__cells.Step_up(0)
+        size = self.__cells.Step_up(0)
+        self.__background.Set_grid_size(size)
         # self.__cells.Set_grid_size((8, 8))
-        self.__cells.Increment_grid_size()
-        # self.__background.Set_grid_size((8, 8))
-        self.__background.Increment_grid_size()
+        # self.__cells.Increment_grid_size()
+        # self.__background.Increment_grid_size()
         self.__cells.Draw()
         self.__background.Draw()
         # self.__cells.Step_up()

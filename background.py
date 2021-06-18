@@ -20,6 +20,10 @@ class Background:
     def Increment_grid_size(self):
         self.Set_grid_size((self.__grid_size[0] + 2, self.__grid_size[1] + 2))
 
+    def Decrement_grid_size(self):
+        # if (self.__grid_size[0] - 2)
+        self.Set_grid_size((self.__grid_size[0] - 2, self.__grid_size[1] - 2))
+
     def Draw(self):
 
         offset = [0, 0]

@@ -9,6 +9,7 @@ pygame.init()
 
 game = Game((800, 800), (8, 8), "Game of life")
 button_flag = True
+button_flag2 = True
 
 while True:
     # event handling
@@ -42,6 +43,13 @@ while True:
 
     elif keys[pygame.K_a] == False and button_flag == False:
         button_flag = True
+
+    elif keys[pygame.K_d] and button_flag2:
+        game.Start()
+        button_flag2 = False
+
+    elif keys[pygame.K_d] == False and button_flag2 == False:
+        button_flag2 = True
 
         # delay
     pygame.time.delay(20)
