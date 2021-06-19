@@ -9,6 +9,7 @@ Made in [pygame](https://www.pygame.org/news)
 ## Controls
 
 SPACE -> Next step
+
 arrows -> moving the grid
 
 Work in progress..
