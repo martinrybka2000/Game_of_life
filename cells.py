@@ -2,6 +2,7 @@
 import numpy as np
 import pygame
 import math
+import random
 
 
 class Cells:
@@ -20,20 +21,26 @@ class Cells:
         self.__offset = [0, 0]
         self.__zoom = 0
 
-        self.__cells[1][0] = True
-        self.__cells[1][1] = True
-        self.__cells[1][3] = True
-        self.__cells[2][3] = True
+        for i in range(20):
+            self.__cells[random.randint(0, grid_size - 1)][random.randint(0, grid_size - 1)] = True
+
+        # self.__cells[0][1] = True
+        # self.__cells[1][2] = True
+        # self.__cells[2][0] = True
+        # self.__cells[2][1] = True
+        # self.__cells[2][2] = True
 
     def __Judge_cell(self, x, y, step, neighbors):
         # rules of the game of life
-        if (self.__cells[x][y] == True):
+        if (self.__cells[y][x] == True):
             if (neighbors < 2 or neighbors > 3):
                 return False
             else:
                 return True
         elif (neighbors == 3):
             return True
+        else:
+            return False
 
     def Set_grid_size(self, grid_size):
         # calculate the diference in grid size
@@ -54,27 +61,33 @@ class Cells:
 
             for x in range(old_arr_shape[0]):
                 for y in range(old_arr_shape[1]):
-                    if(self.__cells[x][y]):
-                        new_arr[x + half_dif][y + half_dif] = True
+                    if(self.__cells[y][x]):
+                        new_arr[y + half_dif][x + half_dif] = True
                     else:
-                        new_arr[x + half_dif][y + half_dif] = False
+                        new_arr[y + half_dif][x + half_dif] = False
 
             self.__grid_size = grid_size
             self.__cells = new_arr
 
         elif (dif < 0):
 
-            new_arr_shape = new_arr.shape
+            # new_arr_shape = new_arr.shape
+            old_arr_shape = self.__cells.shape
+            new_cells_list = []
 
-            for x in range(new_arr_shape[0]):
-                for y in range(new_arr_shape[1]):
-                    if(self.__cells[x][y]):
-                        new_arr[x + half_dif][y + half_dif] = True
-                    else:
-                        new_arr[x + half_dif][y + half_dif] = False
+            for x in range(old_arr_shape[0]):
+                for y in range(old_arr_shape[1]):
+                    if(self.__cells[y][x]):
+                        new_cells_list.append((x + half_dif, y + half_dif))
+
+            for cell in new_cells_list:
+                new_arr[cell[1]][cell[0]] = True
 
             self.__grid_size = grid_size
             self.__cells = new_arr
+
+        # print(self.__cells)
+        # print("\n")
 
     def Increment_grid_size(self):
         self.Set_grid_size(self.__grid_size + 2)
@@ -100,6 +113,9 @@ class Cells:
 
         offset = self.__offset
 
+        # print(self.__cells)
+        # print("\n")
+
         # list of alive cells
         alivecells = []
 
@@ -110,7 +126,7 @@ class Cells:
         # looking for alive cells
         for x in range(self.__cells.shape[0]):
             for y in range(self.__cells.shape[1]):
-                if (self.__cells[x][y] == True):
+                if (self.__cells[y][x] == True):
                     alivecells.append(pygame.Rect(x*rec_width + offset[0], y*rec_height + offset[1], rec_width, rec_height))
 
         # drawing alive cells
@@ -126,6 +142,7 @@ class Cells:
     def Step_up(self, num_of_steps):
 
         # iterate thru the inner square
+        self.Set_grid_size(self.__grid_size + 4)
 
         new_cells = np.zeros((self.__grid_size, self.__grid_size))
 
@@ -134,21 +151,24 @@ class Cells:
 
                 neighbors = 0
                 # if cell would count itself as her neighbor
-                if (self.__cells[x][y] == True):
+                if (self.__cells[y][x] == True):
                     neighbors -= 1
 
                 # count neighbors
                 for i in range(9):
                     Vec_x = (i % 3) - 1
                     Vec_y = math.floor(i / 3) - 1
-                    if (self.__cells[x + Vec_x][y + Vec_y] == True):
+                    if (self.__cells[y + Vec_y][x + Vec_x] == True):
                         neighbors += 1
 
                 # check if the cell dead or alive
-                new_cells[x][y] = self.__Judge_cell(x, y, self.__actual_step, neighbors)
+                new_cells[y][x] = self.__Judge_cell(x, y, self.__actual_step, neighbors)
 
         self.__actual_step += 1
         self.__cells = new_cells
+        for i in range(2):
+            self.Decrement_grid_size()
+
         return self.__grid_size
 
     def Step_back(self, num_of_steps):
@@ -158,7 +178,7 @@ class Cells:
 
         # check if out of boundries
         if (x < self.__grid_size and y < self.__grid_size):
-            if(self.__cells[x][y] == True):
-                self.__cells[x][y] = False
+            if(self.__cells[y][x] == True):
+                self.__cells[y][x] = False
             else:
-                self.__cells[x][y] = True
+                self.__cells[y][x] = True
