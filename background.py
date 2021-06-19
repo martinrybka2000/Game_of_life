@@ -15,10 +15,13 @@ class Background:
 
     def Set_grid_size(self, grid_size):
         self.__grid_size = grid_size
-        # self.Draw()
 
     def Increment_grid_size(self):
-        self.Set_grid_size((self.__grid_size[0] + 2, self.__grid_size[1] + 2))
+        self.Set_grid_size(self.__grid_size + 2)
+
+    def Decrement_grid_size(self):
+        if (self.__grid_size > 2):
+            self.Set_grid_size(self.__grid_size - 2)
 
     def Draw(self):
 
@@ -39,15 +42,15 @@ class Background:
             x1 = self.__display_size[0] + 1 + offset[0]
 
             # calculating the distance between lines
-            x_offset = self.__display_size[0] / (self.__grid_size[0])
-            y_offset = self.__display_size[1] / (self.__grid_size[1])
+            x_offset = self.__display_size[0] / (self.__grid_size)
+            y_offset = self.__display_size[1] / (self.__grid_size)
 
             # drawing horisontal lines
-            for i in range(self.__grid_size[0] + 1):
+            for i in range(self.__grid_size + 1):
                 pygame.draw.line(self.__screen, self.__line_color, (x_offset * i - 1 + offset[0], y0), (x_offset * i - 1 + offset[0], y1), self.__line_width)
 
             # drawing vertical lines
-            for i in range(self.__grid_size[1] + 1):
+            for i in range(self.__grid_size + 1):
                 pygame.draw.line(self.__screen, self.__line_color, (x0, y_offset * i - 1 + offset[1]), (x1, y_offset * i - 1 + offset[1]), self.__line_width)
 
     # adding the offeset vector and Drawing the lines again
