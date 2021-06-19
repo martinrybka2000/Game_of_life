@@ -21,7 +21,7 @@ class Cells:
         self.__offset = [0, 0]
         self.__zoom = 0
 
-        for i in range(20):
+        for i in range(30):
             self.__cells[random.randint(0, grid_size - 1)][random.randint(0, grid_size - 1)] = True
 
         # self.__cells[0][1] = True
