@@ -55,4 +55,4 @@ while True:
         button_flag2 = True
 
         # delay
-    pygame.time.delay(20)
+    pygame.time.delay(5)
