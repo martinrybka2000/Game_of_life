@@ -3,6 +3,7 @@ import numpy as np
 import pygame
 import math
 import random
+import time
 
 
 class Cells:
@@ -130,6 +131,7 @@ class Cells:
 
     def Step_up(self, num_of_steps):
 
+        t0 = time.clock_gettime(1)
         # adding one layer to the grid
         self.Set_grid_size(self.__grid_size + 2)
 
@@ -180,6 +182,8 @@ class Cells:
         self.__cells = new_cells
         self.Decrement_grid_size()
 
+        t1 = time.clock_gettime(1) - t0
+        print("Time elapsed: ", t1, "  grid seize: ", self.__grid_size)
         return self.__grid_size
 
     def Step_back(self, num_of_steps):
