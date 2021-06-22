@@ -42,7 +42,7 @@ while True:
 
     elif keys[pygame.K_SPACE] and button_flag:
         game.Tick()
-        button_flag = False
+        # button_flag = False
 
     elif keys[pygame.K_SPACE] == False and button_flag == False:
         button_flag = True
