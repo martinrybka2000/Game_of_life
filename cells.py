@@ -127,11 +127,10 @@ class Cells:
         # adding the offset and drawing the ceels again
         for i in range(len(offset)):
             self.__offset[i] += offset[i]
-        self.Draw()
 
     def Step_up(self, num_of_steps):
 
-        t0 = time.clock_gettime(1)
+        # t0 = time.clock_gettime(1)
         # adding one layer to the grid
         self.Set_grid_size(self.__grid_size + 2)
 
@@ -182,18 +181,28 @@ class Cells:
         self.__cells = new_cells
         self.Decrement_grid_size()
 
-        t1 = time.clock_gettime(1) - t0
-        print("Time elapsed: ", t1, "  grid seize: ", self.__grid_size)
+        # t1 = time.clock_gettime(1) - t0
+        # print("Time elapsed: ", t1, "  grid seize: ", self.__grid_size)
         return self.__grid_size
 
     def Step_back(self, num_of_steps):
         print("nothing")
 
     def Switch_cell(self, x, y):
-
         # check if out of boundries
         if (x < self.__grid_size and y < self.__grid_size):
             if(self.__cells[y][x] == True):
                 self.__cells[y][x] = False
             else:
                 self.__cells[y][x] = True
+
+    def Turn_on_off_cell(self, x, y, on_off=True):
+        # check if out of boundries
+        if (x < self.__grid_size and y < self.__grid_size):
+            if(on_off):
+                self.__cells[y][x] = True
+            else:
+                self.__cells[y][x] = False
+
+    def Get_grid_size(self):
+        return self.__grid_size

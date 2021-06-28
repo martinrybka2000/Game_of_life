@@ -84,4 +84,3 @@ class Background:
         for i in range(len(looping_offset)):
             self.__offset[i] += looping_offset[i]
 
-        self.Draw()

@@ -1,5 +1,6 @@
 # import numpy as np
 import pygame
+import math
 
 from background import Background
 from cells import Cells
@@ -41,21 +42,32 @@ class Game:
         print("nothing yet")
 
     def Move(self, offset):
-        self.__screen.fill(self.__back_color)
         self.__cells.Move(offset)
         self.__background.Move(offset)
-        pygame.display.update()
+        self.Update()
 
     def Update(self):
-        print("nothing yet")
-
-    def Tick(self):
         self.__screen.fill(self.__back_color)
-        size = self.__cells.Step_up(0)
-        self.__background.Set_grid_size(size)
-        # self.__cells.Increment_grid_size()
-        # self.__background.Increment_grid_size()
         self.__cells.Draw()
         self.__background.Draw()
-
         pygame.display.update()
+
+    def Tick(self):
+        size = self.__cells.Step_up(0)
+        self.__background.Set_grid_size(size)
+
+        self.Update()
+
+    def Click(self, x, y, moving=False, special_key=pygame.KMOD_NONE):
+
+        x_pos = math.floor((x * self.__cells.Get_grid_size()) / self.__display_size[0])
+        y_pos = math.floor((y * self.__cells.Get_grid_size()) / self.__display_size[1])
+
+        if (not moving):
+            self.__cells.Switch_cell(x_pos, y_pos)
+        elif (special_key == pygame.KMOD_NONE):
+            self.__cells.Turn_on_off_cell(x_pos, y_pos, True)
+        elif (special_key == pygame.KMOD_LSHIFT):
+            self.__cells.Turn_on_off_cell(x_pos, y_pos, False)
+
+        self.Update()
