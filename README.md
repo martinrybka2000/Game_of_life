@@ -8,10 +8,10 @@ Made in [pygame](https://www.pygame.org/news)
 
 ## Controls
 
-SPACE -> Next step
+SPACE -> Next step  
 arrows or WASD -> moving the grid
 
-mouse -> resurectings cells
+mouse -> resurectings cells  
 mouse + Lshift -> killing cells
 
 Work in progress..
