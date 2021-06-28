@@ -3,6 +3,7 @@ import numpy as np
 import pygame
 import math
 import random
+import time
 
 
 class Cells:
@@ -21,14 +22,8 @@ class Cells:
         self.__offset = [0, 0]
         self.__zoom = 0
 
-        for i in range(20):
+        for i in range(30):
             self.__cells[random.randint(0, grid_size - 1)][random.randint(0, grid_size - 1)] = True
-
-        # self.__cells[0][1] = True
-        # self.__cells[1][2] = True
-        # self.__cells[2][0] = True
-        # self.__cells[2][1] = True
-        # self.__cells[2][2] = True
 
     def __Judge_cell(self, x, y, step, neighbors):
         # rules of the game of life
@@ -86,14 +81,12 @@ class Cells:
             self.__grid_size = grid_size
             self.__cells = new_arr
 
-        # print(self.__cells)
-        # print("\n")
-
     def Increment_grid_size(self):
         self.Set_grid_size(self.__grid_size + 2)
 
     def Decrement_grid_size(self):
 
+        # checking if it would delete cells
         for i in range(self.__grid_size):
             if (self.__cells[i][0]):
                 return False
@@ -112,9 +105,6 @@ class Cells:
     def Draw(self):
 
         offset = self.__offset
-
-        # print(self.__cells)
-        # print("\n")
 
         # list of alive cells
         alivecells = []
@@ -137,48 +127,82 @@ class Cells:
         # adding the offset and drawing the ceels again
         for i in range(len(offset)):
             self.__offset[i] += offset[i]
-        self.Draw()
 
     def Step_up(self, num_of_steps):
 
-        # iterate thru the inner square
-        self.Set_grid_size(self.__grid_size + 4)
+        # t0 = time.clock_gettime(1)
+        # adding one layer to the grid
+        self.Set_grid_size(self.__grid_size + 2)
 
+        # new grid for cells
         new_cells = np.zeros((self.__grid_size, self.__grid_size))
 
-        for x in range(1, self.__cells.shape[0] - 1):
-            for y in range(1, self.__cells.shape[1] - 1):
+        neighbors = 0
 
-                neighbors = 0
-                # if cell would count itself as her neighbor
-                if (self.__cells[y][x] == True):
-                    neighbors -= 1
+        # iterate thru the last and first row
+        for i in range(2):
+            lst_or_frst_clmc = (self.__grid_size - 1)*i  # last or first column
+            scnd_or_bfr_lst_clmc = 1 + (self.__grid_size - 3)*i  # second or one before last columnb
+            L = self.__cells[scnd_or_bfr_lst_clmc][1]
+            M = self.__cells[scnd_or_bfr_lst_clmc][2]
+            R = self.__cells[scnd_or_bfr_lst_clmc][3]
+            for x in range(2, self.__grid_size - 2):
+                neighbors = L + M + R
+                new_cells[lst_or_frst_clmc][x] = self.__Judge_cell(x, lst_or_frst_clmc, self.__actual_step, neighbors)
+                L = M
+                M = R
+                R = self.__cells[scnd_or_bfr_lst_clmc][x + 2]
 
-                # count neighbors
-                for i in range(9):
-                    Vec_x = (i % 3) - 1
-                    Vec_y = math.floor(i / 3) - 1
-                    if (self.__cells[y + Vec_y][x + Vec_x] == True):
-                        neighbors += 1
+        # iterate thru the last and first column
+        for i in range(2):
+            lst_or_frst_rw = (self.__grid_size - 1)*i  # last or first column
+            scnd_or_bfr_lst_rw = 1 + (self.__grid_size - 3)*i  # second or one before last column
+            L = self.__cells[1][scnd_or_bfr_lst_rw]
+            M = self.__cells[2][scnd_or_bfr_lst_rw]
+            R = self.__cells[3][scnd_or_bfr_lst_rw]
+            for y in range(2, self.__grid_size - 2):
+                neighbors = L + M + R
+                new_cells[y][lst_or_frst_rw] = self.__Judge_cell(lst_or_frst_rw, y, self.__actual_step, neighbors)
+                L = M
+                M = R
+                R = self.__cells[y + 2][scnd_or_bfr_lst_rw]
+
+        # iterate thru the inner square
+        for x in range(1, self.__grid_size - 1):
+            for y in range(1, self.__grid_size - 1):
+
+                neighbors = self.__cells[y-1][x-1] + self.__cells[y-1][x] + self.__cells[y-1][x+1] + self.__cells[y][x-1] + \
+                    + self.__cells[y][x+1] + self.__cells[y+1][x-1] + self.__cells[y+1][x] + self.__cells[y+1][x+1]
 
                 # check if the cell dead or alive
                 new_cells[y][x] = self.__Judge_cell(x, y, self.__actual_step, neighbors)
 
         self.__actual_step += 1
         self.__cells = new_cells
-        for i in range(2):
-            self.Decrement_grid_size()
+        self.Decrement_grid_size()
 
+        # t1 = time.clock_gettime(1) - t0
+        # print("Time elapsed: ", t1, "  grid seize: ", self.__grid_size)
         return self.__grid_size
 
     def Step_back(self, num_of_steps):
         print("nothing")
 
     def Switch_cell(self, x, y):
-
         # check if out of boundries
         if (x < self.__grid_size and y < self.__grid_size):
             if(self.__cells[y][x] == True):
                 self.__cells[y][x] = False
             else:
                 self.__cells[y][x] = True
+
+    def Turn_on_off_cell(self, x, y, on_off=True):
+        # check if out of boundries
+        if (x < self.__grid_size and y < self.__grid_size):
+            if(on_off):
+                self.__cells[y][x] = True
+            else:
+                self.__cells[y][x] = False
+
+    def Get_grid_size(self):
+        return self.__grid_size
