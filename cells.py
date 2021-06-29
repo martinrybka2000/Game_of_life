@@ -28,12 +28,11 @@ class Cells:
         self.__offset = [0, 0]
         self.__zoom = 0
 
-        for i in range(100):
+        for i in range(200):
             self.__alive_cells[(random.randint(0, grid_size - 1), random.randint(0, grid_size - 1))] = Cell(0, True)
 
     def __Judge_cells(self):
         # rules of the game of life
-
         for coord, cell in list(self.__alive_cells.items()):
             if (cell.alive == True):
                 if (cell.n < 2 or cell.n > 3):
@@ -41,70 +40,12 @@ class Cells:
             elif (cell.n != 3):
                 del self.__alive_cells[coord]
 
-    def Set_grid_size(self, grid_size):
-        # calculate the diference in grid size
-        if (self.__grid_size <= 2):
-            return 0
-
-        dif = grid_size - self.__grid_size
-        half_dif = math.floor(dif / 2)
-
-        if (dif == 0):
-            return 0
-
-        new_arr = np.zeros((grid_size, grid_size))
-
-        # if new grid bigger add ald cells to the new array moved by a vector
-        if (dif > 0):
-            old_arr_shape = self.__cells.shape
-
-            for x in range(old_arr_shape[0]):
-                for y in range(old_arr_shape[1]):
-                    if(self.__cells[y][x]):
-                        new_arr[y + half_dif][x + half_dif] = True
-                    else:
-                        new_arr[y + half_dif][x + half_dif] = False
-
-            self.__grid_size = grid_size
-            self.__cells = new_arr
-
-        elif (dif < 0):
-
-            # new_arr_shape = new_arr.shape
-            old_arr_shape = self.__cells.shape
-            new_cells_list = []
-
-            for x in range(old_arr_shape[0]):
-                for y in range(old_arr_shape[1]):
-                    if(self.__cells[y][x]):
-                        new_cells_list.append((x + half_dif, y + half_dif))
-
-            for cell in new_cells_list:
-                new_arr[cell[1]][cell[0]] = True
-
-            self.__grid_size = grid_size
-            self.__cells = new_arr
-
     def Increment_grid_size(self):
-        self.Set_grid_size(self.__grid_size + 2)
+        self.__grid_size += 2
 
     def Decrement_grid_size(self):
-
-        # checking if it would delete cells
-        for i in range(self.__grid_size):
-            if (self.__cells[i][0]):
-                return False
-            if (self.__cells[i][self.__grid_size - 1]):
-                return False
-
-        for i in range(self.__grid_size):
-            if (self.__cells[0][i]):
-                return False
-            if (self.__cells[self.__grid_size - 1][i]):
-                return False
-
-        self.Set_grid_size(self.__grid_size - 2)
-        return True
+        if (self.__grid_size > 2):
+            self.__grid_size -= 2
 
     def Draw(self):
 
@@ -126,7 +67,7 @@ class Cells:
 
     def Step_up(self, num_of_steps):
 
-        # t0 = time.clock_gettime(1)
+        t0 = time.clock_gettime(1)
 
         new_cells = {}
 
@@ -145,8 +86,8 @@ class Cells:
 
         self.__Judge_cells()
 
-        # t1 = time.clock_gettime(1) - t0
-        # print("Time elapsed: ", t1, "  grid seize: ", self.__grid_size)
+        t1 = time.clock_gettime(1) - t0
+        print("Time elapsed: ", t1, "  cells cnt: ", len(self.__alive_cells))
         return self.__grid_size
 
     def Step_back(self, num_of_steps):
@@ -154,19 +95,18 @@ class Cells:
 
     def Switch_cell(self, x, y):
         # check if out of boundries
-        if (x < self.__grid_size and y < self.__grid_size):
-            if(self.__cells[y][x] == True):
-                self.__cells[y][x] = False
-            else:
-                self.__cells[y][x] = True
+        if((x, y) in self.__alive_cells):
+            del self.__alive_cells[x, y]
+        else:
+            self.__alive_cells[x, y] = Cell(0, True)
 
     def Turn_on_off_cell(self, x, y, on_off=True):
         # check if out of boundries
-        if (x < self.__grid_size and y < self.__grid_size):
-            if(on_off):
-                self.__cells[y][x] = True
-            else:
-                self.__cells[y][x] = False
+        if(on_off):
+            if ((x, y) not in self.__alive_cells):
+                self.__alive_cells[(x, y)] = Cell(0, True)
+        else:
+            self.__alive_cells.pop((x, y), False)
 
     def Get_grid_size(self):
         return self.__grid_size

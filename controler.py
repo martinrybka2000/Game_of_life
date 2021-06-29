@@ -53,16 +53,22 @@ class Controler:
             quit()
 
         elif keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            self.__game.Move((-10, 0))
-
-        elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             self.__game.Move((10, 0))
 
+        elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+            self.__game.Move((-10, 0))
+
         elif keys[pygame.K_UP] or keys[pygame.K_w]:
-            self.__game.Move((0, -10))
+            self.__game.Move((0, 10))
 
         elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
-            self.__game.Move((0, 10))
+            self.__game.Move((0, -10))
+
+        elif keys[pygame.K_q]:
+            self.__game.Zoom(1)
+
+        elif keys[pygame.K_e]:
+            self.__game.Zoom(-1)
 
         elif keys[pygame.K_SPACE] and self.__button_flag:
             self.__game.Tick()
@@ -72,4 +78,4 @@ class Controler:
             self.__button_flag = True
 
         # delay
-        pygame.time.delay(2)
+        pygame.time.delay(5)
