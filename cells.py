@@ -6,6 +6,12 @@ import random
 import time
 
 
+class Cell:
+    def __init__(self, n, alive):
+        self.n = n
+        self.alive = alive
+
+
 class Cells:
     def __init__(self, surface, grid_size, back_color, alive_color, line_width):
         self.__screen = surface
@@ -18,24 +24,22 @@ class Cells:
         self.__number_of_steps = 10
         self.__actual_step = 0
 
-        self.__cells = np.zeros((grid_size, grid_size))
+        self.__alive_cells = {}
         self.__offset = [0, 0]
         self.__zoom = 0
 
-        for i in range(30):
-            self.__cells[random.randint(0, grid_size - 1)][random.randint(0, grid_size - 1)] = True
+        for i in range(100):
+            self.__alive_cells[(random.randint(0, grid_size - 1), random.randint(0, grid_size - 1))] = Cell(0, True)
 
-    def __Judge_cell(self, x, y, step, neighbors):
+    def __Judge_cells(self):
         # rules of the game of life
-        if (self.__cells[y][x] == True):
-            if (neighbors < 2 or neighbors > 3):
-                return False
-            else:
-                return True
-        elif (neighbors == 3):
-            return True
-        else:
-            return False
+
+        for coord, cell in list(self.__alive_cells.items()):
+            if (cell.alive == True):
+                if (cell.n < 2 or cell.n > 3):
+                    del self.__alive_cells[coord]
+            elif (cell.n != 3):
+                del self.__alive_cells[coord]
 
     def Set_grid_size(self, grid_size):
         # calculate the diference in grid size
@@ -106,21 +110,13 @@ class Cells:
 
         offset = self.__offset
 
-        # list of alive cells
-        alivecells = []
-
         # calculating cell size
         rec_width = self.__screen.get_width() / self.__grid_size
         rec_height = self.__screen.get_height() / self.__grid_size
 
-        # looking for alive cells
-        for x in range(self.__cells.shape[0]):
-            for y in range(self.__cells.shape[1]):
-                if (self.__cells[y][x] == True):
-                    alivecells.append(pygame.Rect(x*rec_width + offset[0], y*rec_height + offset[1], rec_width, rec_height))
-
         # drawing alive cells
-        for rect in alivecells:
+        for coord, cell in self.__alive_cells.items():
+            rect = pygame.Rect(coord[0]*rec_width + offset[0], coord[1]*rec_height + offset[1], rec_width, rec_height)
             pygame.draw.rect(self.__screen, self.__alive_color, rect)
 
     def Move(self, offset):
@@ -131,55 +127,23 @@ class Cells:
     def Step_up(self, num_of_steps):
 
         # t0 = time.clock_gettime(1)
-        # adding one layer to the grid
-        self.Set_grid_size(self.__grid_size + 2)
 
-        # new grid for cells
-        new_cells = np.zeros((self.__grid_size, self.__grid_size))
+        new_cells = {}
 
-        neighbors = 0
+        for coord in self.__alive_cells:
+            new_cells[coord] = Cell(0, True)
 
-        # iterate thru the last and first row
-        for i in range(2):
-            lst_or_frst_clmc = (self.__grid_size - 1)*i  # last or first column
-            scnd_or_bfr_lst_clmc = 1 + (self.__grid_size - 3)*i  # second or one before last columnb
-            L = self.__cells[scnd_or_bfr_lst_clmc][1]
-            M = self.__cells[scnd_or_bfr_lst_clmc][2]
-            R = self.__cells[scnd_or_bfr_lst_clmc][3]
-            for x in range(2, self.__grid_size - 2):
-                neighbors = L + M + R
-                new_cells[lst_or_frst_clmc][x] = self.__Judge_cell(x, lst_or_frst_clmc, self.__actual_step, neighbors)
-                L = M
-                M = R
-                R = self.__cells[scnd_or_bfr_lst_clmc][x + 2]
+        for coord in self.__alive_cells:
 
-        # iterate thru the last and first column
-        for i in range(2):
-            lst_or_frst_rw = (self.__grid_size - 1)*i  # last or first column
-            scnd_or_bfr_lst_rw = 1 + (self.__grid_size - 3)*i  # second or one before last column
-            L = self.__cells[1][scnd_or_bfr_lst_rw]
-            M = self.__cells[2][scnd_or_bfr_lst_rw]
-            R = self.__cells[3][scnd_or_bfr_lst_rw]
-            for y in range(2, self.__grid_size - 2):
-                neighbors = L + M + R
-                new_cells[y][lst_or_frst_rw] = self.__Judge_cell(lst_or_frst_rw, y, self.__actual_step, neighbors)
-                L = M
-                M = R
-                R = self.__cells[y + 2][scnd_or_bfr_lst_rw]
+            for x_dif, y_dif in ([-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]):
+                if((coord[0] + x_dif, coord[1] + y_dif) in new_cells):
+                    new_cells[(coord[0] + x_dif, coord[1] + y_dif)].n += 1
+                else:
+                    new_cells[(coord[0] + x_dif, coord[1] + y_dif)] = Cell(1, False)
 
-        # iterate thru the inner square
-        for x in range(1, self.__grid_size - 1):
-            for y in range(1, self.__grid_size - 1):
+        self.__alive_cells = new_cells
 
-                neighbors = self.__cells[y-1][x-1] + self.__cells[y-1][x] + self.__cells[y-1][x+1] + self.__cells[y][x-1] + \
-                    + self.__cells[y][x+1] + self.__cells[y+1][x-1] + self.__cells[y+1][x] + self.__cells[y+1][x+1]
-
-                # check if the cell dead or alive
-                new_cells[y][x] = self.__Judge_cell(x, y, self.__actual_step, neighbors)
-
-        self.__actual_step += 1
-        self.__cells = new_cells
-        self.Decrement_grid_size()
+        self.__Judge_cells()
 
         # t1 = time.clock_gettime(1) - t0
         # print("Time elapsed: ", t1, "  grid seize: ", self.__grid_size)

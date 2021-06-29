@@ -66,7 +66,7 @@ class Controler:
 
         elif keys[pygame.K_SPACE] and self.__button_flag:
             self.__game.Tick()
-        # button_flag = False
+            # self.__button_flag = False
 
         elif keys[pygame.K_SPACE] == False and self.__button_flag == False:
             self.__button_flag = True
