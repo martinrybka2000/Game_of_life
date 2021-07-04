@@ -2,7 +2,7 @@
 
 ## Description
 
-This is an implementation on game of life based on the original [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
+This is an implementation on **game of life** based on the original [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
 
 Made in [pygame](https://www.pygame.org/news)
 
