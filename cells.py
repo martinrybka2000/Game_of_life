@@ -28,7 +28,7 @@ class Cells:
         self.__offset = [0, 0]
         self.__zoom = 0
 
-        for i in range(200):
+        for i in range(1000):
             self.__alive_cells[(random.randint(0, grid_size - 1), random.randint(0, grid_size - 1))] = Cell(0, True)
 
     def __Judge_cells(self):

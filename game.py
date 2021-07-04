@@ -16,7 +16,7 @@ class Game:
         self.__back_color = pygame.color.Color("white")
         self.__line_color = pygame.color.Color("grey")
         self.__alive_color = pygame.color.Color("black")
-        self.__line_width = 2
+        self.__line_width = 1
         self.__offset = [0, 0]
 
         self.__background = Background(self.__screen, grid_size, self.__line_color, self.__line_width)
@@ -79,10 +79,12 @@ class Game:
     def Zoom(self, zoom):
 
         if(zoom > 0):
-            self.__cells.Increment_grid_size()
-            self.__background.Increment_grid_size()
+            for i in range(zoom):
+                self.__cells.Increment_grid_size()
+                self.__background.Increment_grid_size()
         else:
-            self.__cells.Decrement_grid_size()
-            self.__background.Decrement_grid_size()
+            for i in range(abs(zoom)):
+                self.__cells.Decrement_grid_size()
+                self.__background.Decrement_grid_size()
 
         self.Update()
