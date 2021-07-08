@@ -1,14 +1,13 @@
 import pygame
-# import numpy as np
 from game import Game
 from controler import Controler
 
 pygame.init()
 
-game = Game((800, 800), 100, "Game of life")
+game = Game((800, 800), 100, "Game of life by Martin Rybka")
 mouse_keyboard = Controler(game)
 
-pygame.key.set_repeat(500, 20)
+pygame.font.init()
 
 while True:
     mouse_keyboard.Event()

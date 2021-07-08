@@ -49,22 +49,23 @@ class Controler:
 
             if event.type == pygame.MOUSEMOTION:
                 self.__mouse_moving = True
+                
                 if(self.__mouse_down):
                     if (mods & pygame.KMOD_LCTRL):
+                        if (mouse_keys[0]):
+                            pos = pygame.mouse.get_pos()
+                            self.__game.Click(pos[0], pos[1], True, True)
+                            self.__mouse_draging = False
+                        elif (mouse_keys[2]):
+                            pos = pygame.mouse.get_pos()
+                            self.__game.Click(pos[0], pos[1], True, False)
+                            self.__mouse_draging = False
+                    else:
                         if (self.__mouse_draging):
                             self.__game.Move(pygame.mouse.get_rel())
                         else:
                             pygame.mouse.get_rel()
                             self.__mouse_draging = True
-
-                    elif(mods & pygame.KMOD_LSHIFT):
-                        pos = pygame.mouse.get_pos()
-                        self.__game.Click(pos[0], pos[1], True, pygame.KMOD_LSHIFT)
-                        self.__mouse_draging = False
-                    else:
-                        pos = pygame.mouse.get_pos()
-                        self.__game.Click(pos[0], pos[1], True)
-                        self.__mouse_draging = False
 
         # keys presing handling
         if keys[pygame.K_ESCAPE]:
