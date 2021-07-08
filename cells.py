@@ -28,8 +28,10 @@ class Cells:
         self.__offset = [0, 0]
         self.__zoom = 0
 
-        for i in range(1000):
-            self.__alive_cells[(random.randint(0, grid_size - 1), random.randint(0, grid_size - 1))] = Cell(0, True)
+        self.__myfont = pygame.font.SysFont('Comic Sans MS', 50)
+
+        # for i in range(1000):
+        # self.__alive_cells[(random.randint(0, grid_size - 1), random.randint(0, grid_size - 1))] = Cell(0, True)
 
     def __Judge_cells(self):
         # rules of the game of life
@@ -60,6 +62,10 @@ class Cells:
             rect = pygame.Rect(coord[0]*rec_width + offset[0], coord[1]*rec_height + offset[1], rec_width, rec_height)
             pygame.draw.rect(self.__screen, self.__alive_color, rect)
 
+        # drawing the alive cells counter
+        textsurface = self.__myfont.render(str(len(self.__alive_cells)), False, (0, 0, 0))
+        self.__screen.blit(textsurface, (5, self.__screen.get_height() - self.__myfont.get_height()))
+
     def Move(self, offset):
         # adding the offset and drawing the ceels again
         for i in range(len(offset)):
@@ -67,7 +73,7 @@ class Cells:
 
     def Step_up(self, num_of_steps):
 
-        t0 = time.clock_gettime(1)
+        # t0 = time.clock_gettime(1)
 
         new_cells = {}
 
@@ -86,8 +92,8 @@ class Cells:
 
         self.__Judge_cells()
 
-        t1 = time.clock_gettime(1) - t0
-        print("Time elapsed: ", t1, "  cells cnt: ", len(self.__alive_cells))
+        # t1 = time.clock_gettime(1) - t0
+        # print("Time elapsed: ", t1, "  cells cnt: ", len(self.__alive_cells))
         return self.__grid_size
 
     def Step_back(self, num_of_steps):

@@ -25,19 +25,13 @@ class Game:
         pygame.display.set_caption(name)
         self.__screen.fill(self.__back_color)
 
-        self.__cells.Draw()
         self.__background.Draw()
+        self.__cells.Draw()
 
         pygame.display.update()
 
     def Start(self):
-        if (self.__cells.Decrement_grid_size()):
-            self.__screen.fill(self.__back_color)
-            self.__background.Decrement_grid_size()
-            self.__cells.Draw()
-            self.__background.Draw()
-
-            pygame.display.update()
+        print("nothing")
 
     def Exit(self):
         print("nothing yet")
@@ -53,25 +47,24 @@ class Game:
 
     def Update(self):
         self.__screen.fill(self.__back_color)
-        self.__cells.Draw()
         self.__background.Draw()
+        self.__cells.Draw()
         pygame.display.update()
 
     def Tick(self):
         self.__cells.Step_up(0)
-        # self.__background.Set_grid_size(size)
         self.Update()
 
-    def Click(self, x, y, moving=False, special_key=pygame.KMOD_NONE):
+    def Click(self, x, y, moving=False, turn_on_off=True):
 
         x_pos = math.floor(((x - self.__offset[0]) * self.__cells.Get_grid_size()) / self.__display_size[0])
         y_pos = math.floor(((y - self.__offset[1]) * self.__cells.Get_grid_size()) / self.__display_size[1])
 
         if (not moving):
             self.__cells.Switch_cell(x_pos, y_pos)
-        elif (special_key == pygame.KMOD_NONE):
+        elif (turn_on_off):
             self.__cells.Turn_on_off_cell(x_pos, y_pos, True)
-        elif (special_key == pygame.KMOD_LSHIFT):
+        elif (not turn_on_off):
             self.__cells.Turn_on_off_cell(x_pos, y_pos, False)
 
         self.Update()

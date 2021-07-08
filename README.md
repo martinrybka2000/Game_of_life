@@ -14,9 +14,9 @@ q -> zooming out
 e -> zooming in
 
 mouse_click -> change cells state  
-mouse button down + moving -> resurectings cells  
-mouse button down + moving + Lshift -> killing cells  
-mouse moving + LCTRL -> moving the grid  
+mouse left + CTRL -> resurectings cells  
+mouse right + CTRL -> killing cells  
+mouse moving -> moving the grid  
 mouse wheel -> zoomig in and out
 
 Work in progress..
