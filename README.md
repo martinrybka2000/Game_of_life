@@ -9,6 +9,7 @@
     * [Creating cells](#creating-cells)
   - [Next generation algorithm description](#next-generation-algorithm-description)
   - [Instalation](#instalation)
+  - [ToDo](#todo)
 
 ## Description
 
@@ -41,5 +42,22 @@ For creating or destroying cells you can use mouse + CTRL
 ## Next generation algorithm description
 
 ## Instalation
+For installation it is recommended to create a virtual environment using [venv](https://docs.python.org/3/tutorial/venv.html) or any other  
+  
+Creating and activating virtual environment: 
+```
+python3 -m venv venv  
+source venv/bin/activate  
+git clone https://github.com/martinrybka2000/Game_of_life.git  
+pip install -r requirements.txt
+```  
+
+Run:  
+```
+python3 main.py
+```
+
+## ToDo
+- Add a list of most popular game of life structures
 
 Work in progress..
