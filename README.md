@@ -48,7 +48,13 @@ You can use Esc or the 'x' button
 ## Instalation
 For installation it is recommended to create a virtual environment using [venv](https://docs.python.org/3/tutorial/venv.html) or any other  
   
-Creating and activating virtual environment: 
+1. Creating a destination directory  
+```
+mkdir [name]  
+cd [name]
+```
+
+2. Creating and activating virtual environment: 
 ```
 python3 -m venv venv  
 source venv/bin/activate  
@@ -57,7 +63,7 @@ cd Game_of_life
 pip install -r requirements.txt
 ```  
 
-Run:  
+3. Run:  
 ```
 python3 main.py
 ```
