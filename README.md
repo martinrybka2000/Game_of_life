@@ -7,6 +7,7 @@
     * [Next generation](#next-generation)
     * [Zooming](#zooming)
     * [Creating cells](#creating-cells)
+    * [Exiting](#exiting)
   - [Next generation algorithm description](#next-generation-algorithm-description)
   - [Instalation](#instalation)
   - [ToDo](#todo)
@@ -39,6 +40,9 @@ For creating or destroying cells you can use mouse + CTRL
   
 <img src="https://user-images.githubusercontent.com/39592198/125063119-63036e80-e0af-11eb-8e0d-b17103dcee2e.gif" width="450" height="300"/>
 
+### Exiting
+You can use Esc or the 'x' button
+
 ## Next generation algorithm description
 
 ## Instalation
@@ -48,7 +52,8 @@ Creating and activating virtual environment:
 ```
 python3 -m venv venv  
 source venv/bin/activate  
-git clone https://github.com/martinrybka2000/Game_of_life.git  
+git clone https://github.com/martinrybka2000/Game_of_life.git 
+cd Game_of_life  
 pip install -r requirements.txt
 ```  
 
