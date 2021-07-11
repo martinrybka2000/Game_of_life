@@ -44,6 +44,41 @@ For creating or destroying cells you can use mouse + CTRL
 You can use Esc or the 'x' button
 
 ## Next generation algorithm description
+For generating the next generation of cells the algorytm stores the alive cells in a hashmap.  
+Iterating thru the alive cells the algorithm is adding every connected cell to the hashmap and itereting the neighbour counter.  
+
+```
+    def Step_up(self, num_of_steps):
+
+        new_cells = {}
+
+        for coord in self.__alive_cells:
+            new_cells[coord] = Cell(0, True)
+
+        for coord in self.__alive_cells:
+
+            for x_dif, y_dif in ([-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]):
+                if((coord[0] + x_dif, coord[1] + y_dif) in new_cells):
+                    new_cells[(coord[0] + x_dif, coord[1] + y_dif)].n += 1
+                else:
+                    new_cells[(coord[0] + x_dif, coord[1] + y_dif)] = Cell(1, False)
+
+        self.__alive_cells = new_cells
+
+        self.__Judge_cells()
+```
+The algorithm that judges the state of the cell on the neighbour count  
+
+```
+    def __Judge_cells(self):
+            # rules of the game of life
+            for coord, cell in list(self.__alive_cells.items()):
+                if (cell.alive == True):
+                    if (cell.n < 2 or cell.n > 3):
+                        del self.__alive_cells[coord]
+                elif (cell.n != 3):
+                    del self.__alive_cells[coord]
+```
 
 ## Instalation
 For installation it is recommended to create a virtual environment using [venv](https://docs.python.org/3/tutorial/venv.html) or any other  
